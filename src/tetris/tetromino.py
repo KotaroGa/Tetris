@@ -41,3 +41,17 @@ class Tetromino:
                     blocks.append((self.x + x, self.y + y))
 
         return blocks
+    
+    def rotate_clockwise(self):
+        '''Rotate the tetromino 90 degrees clockwise '''
+        # Transpose the matrix (rows become columns)
+        transposed = list(zip(*self.shape))
+        # Reverse each row to complete clockwise rotation
+        self.shape = [list(reversed(row)) for row in transposed]
+
+    def rotate_counter_clockwise(self):
+        ''' Rotate the tetromino 90 degrees counter-clockwise '''
+        # Reverse each row first
+        reversed_rows = [list(reversed(row)) for row in self.shape]
+        # Transpose the matrix
+        self.shape = list(zip(*reversed_rows))
