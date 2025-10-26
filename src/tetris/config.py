@@ -26,8 +26,32 @@ TETROMINOS = {
         [1, 1, 1, 0],
         [0, 0, 0, 0]
     ],
-     # L, J, S, Z will be added later, right now let's get the basics working
+     'L': [ # The L-shaped piece (orange)
+        [0, 0, 0, 0],
+        [0, 0, 1, 0],
+        [1, 1, 1, 0],
+        [0, 0, 0, 0]
+    ],
+    'J': [ # The J-shaped piece (blue)
+        [0, 0, 0, 0],
+        [1, 0, 0, 0],
+        [1, 1, 1, 0],
+        [0, 0, 0, 0]
+    ],
+    'S': [ # The S-shaped piece (green)
+        [0, 0, 0, 0],
+        [1, 0, 0, 0],
+        [1, 1, 1, 0],
+        [0, 0, 0, 0]
+    ],
+    'Z': [ # The Z-shaped piece (red)
+        [0, 0, 0, 0],
+        [1, 1, 0, 0],
+        [0, 1, 1, 0],
+        [0, 0, 0, 0]
+    ]
 }
+
 
 # Board dimensions -standard Tetris board is 10 blocks wide, 20 blocks tall
 BOARD_WIDTH = 10
