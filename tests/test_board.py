@@ -121,3 +121,25 @@ class TestBoard(unittest.TestCase):
         # I-piece at this position should have a block at (5, 5)
 
         self.assertTrue(board.has_collision(tetromino))
+
+    
+    def  test_lock_tetrominio(self):
+        ''' Test that a tetromino can be locked onto the board '''
+        board = Board()
+        tetromino = Tetromino('I')
+
+        # Lock the tetromino at position (3, 0)
+        board.lock_tetromino(tetromino)
+
+        # Check that the blocks are now on the board
+        for x, y in tetromino.blocks:
+            self.assertEqual(board.grid[y][x], tetromino.color)
+
+    def test_cannot_lock_out_of_bounds(self):
+        ''' Test that locking out of bounds raises an error '''
+        board = Board()
+        tetromino = Tetromino('I')
+        tetromino.x = -1 # Partially off left edge
+
+        with self.assertRaises(ValueError):
+            board.lock_tetromino(tetromino)

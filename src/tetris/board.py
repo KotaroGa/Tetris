@@ -44,3 +44,22 @@ class Board:
                 return True
 
         return False
+    
+
+    def lock_tetromino(self, tetromino):
+        '''
+        Lock a tetromino onto the board, making it part of the fixed blocks
+        
+        Args:
+            tetromino (Tetromino): The tetromino to lock in place
+            
+        Raises:
+            ValueError: if the tetromino is in an invalid position
+        '''
+        if self.has_collision(tetromino):
+            raise ValueError("Cannot lock tetromino - position would cause collision")
+        
+        # Place each block of the tetromino on the board
+        for block_x, block_y in tetromino.blocks:
+            if 0 <= block_y < self.height and 0 <= block_x < self.width:
+                self.grid[block_y][block_x] = tetromino.color
