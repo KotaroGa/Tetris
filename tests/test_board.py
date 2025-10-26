@@ -35,27 +35,49 @@ class TestBoard(unittest.TestCase):
         board = Board()
         tetromino = Tetromino('I')
     
-        # Move I-piece so bottom block is exactly at the bottom (y=19)
-        # I-piece blocks at y=0: [(3,0), (4,0), (5,0), (6,0)] but wait this checks the real position
-        print(f"\nI-piece shape: {tetromino.shape}")
-        print(f"I-piece blocks at start: {tetromino.blocks}")
+        # Debug: see where blocks are
+        print(f"\nI-piece blocks at start: {tetromino.blocks}")
     
-        # Move piece very low
-        tetromino.y = 18  # This should definitely cause collision
+        # Move I-piece so bottom blocks hit the bottom
+        # Bottom of board is y=19 (we have 20 rows: 0-19)
+        # I-piece blocks are at y=1 in the matrix.
+        # tetromino.y + 1 = actual y position of bottom blocks
+        # We want: tetromino.y + 1 = 19  → tetromino.y = 18
+        tetromino.y = 18
+    
+        print(f"I-piece blocks at y=18: {tetromino.blocks}")
+    
+        # At y=18, bottom blocks should be at y=19 (the last row)
+        self.assertFalse(board.has_collision(tetromino))
+    
+        # Should collide
+        tetromino.y = 19
+        print(f"I-piece blocks at y=19: {tetromino.blocks}")
         self.assertTrue(board.has_collision(tetromino))
+
 
     def test_collision_with_walls(self):
-        ''' Test that tetromino hits walls'''
+        """Test that collision is detected with left/right walls"""
         board = Board()
         tetromino = Tetromino('I')
-
-        # Move I-piece to left wall (I-piece wide is 4 blocks)
-        tetromino.x = -1 # Partially off the left edge
+    
+        print(f"\nI-piece blocks at start: {tetromino.blocks}")
+    
+        # Move I-piece to left wall
+        # I-piece leftmost blocks are at x=3 in the matrix
+        # We want: tetromino.x + 3 < 0
+        tetromino.x = -1
+        print(f"I-piece blocks at x=-1: {tetromino.blocks}")
+        self.assertTrue(board.has_collision(tetromino))
+    
+        # Reset and test right wall
+        tetromino = Tetromino('I')
+        # I-piece rightmost blocks are at x=6 in the matrix
+        # We want: tetromino.x + 6 >= 10
+        tetromino.x = 7  # 7 + 6 = 13 which is >= 10
+        print(f"I-piece blocks at x=7: {tetromino.blocks}")
         self.assertTrue(board.has_collision(tetromino))
 
-        # Move I-piece to right wall
-        tetromino.x = 7 # 10 -4 = 6 is max, so 7 is off edge(10 - 4 + 1 = 7)
-        self.assertTrue(board.has_collision(tetromino))
 
     def test_no_collision_valid_position(self):
         ''' Test that no collision is detected in valid positions '''
@@ -84,3 +106,18 @@ class TestBoard(unittest.TestCase):
         # Check each block individually
         for x, y in tetromino.blocks:
             print(f"Block at ({x}, {y}): x_ok={0 <= x < 10}, y_ok={0 <= y < 20}")
+
+    def test_collision_with_placed_blocks(self):
+        ''' Test that collision is detected with already placed blocks '''
+        board = Board()
+        tetromino = Tetromino('I')
+
+        # Place a block manually in the board grid
+        board.grid[5][5] = 1 # Place a block at (5, 5)
+
+        # Position tetromino to collide with the placed block
+        tetromino.x = 4
+        tetromino.y = 4
+        # I-piece at this position should have a block at (5, 5)
+
+        self.assertTrue(board.has_collision(tetromino))

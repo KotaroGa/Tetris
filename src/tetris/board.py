@@ -39,6 +39,8 @@ class Board:
             # Check if block is below the bottom
             if block_y >= self.height:
                 return True
-            # check if block overlaps with already placed blocks (Not yet implemented, first add block placement)
+            # check if block overlaps with already placed blocks
+            if block_y >= 0 and self.grid[block_y][block_x]:
+                return True
 
         return False
