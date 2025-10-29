@@ -1,0 +1,17 @@
+LICENSE
+README.md
+setup.py
+src/terminal_tetris.egg-info/PKG-INFO
+src/terminal_tetris.egg-info/SOURCES.txt
+src/terminal_tetris.egg-info/dependency_links.txt
+src/terminal_tetris.egg-info/top_level.txt
+src/tetris/__init__.py
+src/tetris/__main__.py
+src/tetris/board.py
+src/tetris/config.py
+src/tetris/game.py
+src/tetris/renderer.py
+src/tetris/tetromino.py
+tests/test_board.py
+tests/test_game.py
+tests/test_tetromino.py
