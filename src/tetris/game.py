@@ -123,6 +123,13 @@ class Game:
     def _lock_piece(self):
         """Lock the current piece and create a new one"""
         self.board.lock_tetromino(self.current_piece)
+
+        lines_cleared = self.board.clear_lines()
+        if lines_cleared > 0:
+            # Update score based on lines cleared
+            self.lines_cleared += lines_cleared
+            self.score += lines_cleared * 100 # Basic scoring
+            # Level progression is going to be here
         self.current_piece = self._create_new_piece()
         
         # Check if game over (new piece collides immediately)

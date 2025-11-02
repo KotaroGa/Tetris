@@ -143,3 +143,40 @@ class TestBoard(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             board.lock_tetromino(tetromino)
+
+
+    def test_detect_complete_lines(self):
+        """Test that complete lines are correctly detected"""
+        board = Board()
+    
+        # Fill row 18 completely
+        for x in range(board.width):
+            board.grid[18][x] = 1
+    
+        complete_lines = board.get_complete_lines()
+        self.assertEqual(complete_lines, [18])
+    
+        # Test multiple complete lines
+        for x in range(board.width):
+            board.grid[15][x] = 1
+    
+        complete_lines = board.get_complete_lines()
+        self.assertEqual(sorted(complete_lines), [15, 18])
+
+    def test_clear_single_line(self):
+        """Test clearing a single complete line"""
+        board = Board()
+    
+        # Create a pattern: one complete line with blocks above and below
+        board.grid[17] = [1] * board.width  # Complete line
+        board.grid[16][3] = 1  # Single block above
+        board.grid[18][5] = 1  # Single block below
+    
+        lines_cleared = board.clear_lines()
+    
+        self.assertEqual(lines_cleared, 1)
+        # Block above should have fallen down
+        self.assertEqual(board.grid[17][3], 1)
+        self.assertEqual(board.grid[16][3], 0)
+        # Block below should stay in place
+        self.assertEqual(board.grid[18][5], 1)
