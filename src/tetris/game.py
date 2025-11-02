@@ -3,7 +3,7 @@ from .tetromino import Tetromino
 from .config import BOARD_WIDTH, BOARD_HEIGHT
 import random
 import time
-import curses  # <-- Add this import
+import curses
 
 class Game:
     """
