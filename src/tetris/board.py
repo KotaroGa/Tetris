@@ -63,3 +63,32 @@ class Board:
         for block_x, block_y in tetromino.blocks:
             if 0 <= block_y < self.height and 0 <= block_x < self.width:
                 self.grid[block_y][block_x] = tetromino.color
+
+
+    def get_complete_lines(self):
+        """Find all rows that completely filled with blocks"""
+        complete_lines = []
+        for y in range(self.height):
+            # Check if every cell in this row is filled out (not 0)
+            if all(cell != 0 for cell in self.grid[y]):
+                complete_lines.append(y)
+        return complete_lines
+    
+    def clear_lines(self):
+        """ Clear all complete lines and make blocks above fall down """
+        complete_lines = self.get_complete_lines()
+
+        if not complete_lines:
+            return 0
+        
+        # Sort from top to bottom for proper clearing
+        complete_lines.sort()
+
+        # Remove each complete line and shift everything down
+        for line_y in complete_lines:
+            # Remove the complete line
+            self.grid.pop(line_y)
+            # Add a new empty line at the top
+            self.grid.insert(0, [0] * self.width)
+
+        return len(complete_lines)
