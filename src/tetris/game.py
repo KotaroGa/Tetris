@@ -15,7 +15,7 @@ class Game:
     3. Render the game display
     4. Repeat until game over
     """
-    stdscr: 'curses._CursesWindow'
+    stdscr: 'curses._CursesWindow' # type: ignore 
 
     def __init__(self, stdscr=None):  # Add stdscr parameter
         """
@@ -124,12 +124,14 @@ class Game:
         """Lock the current piece and create a new one"""
         self.board.lock_tetromino(self.current_piece)
 
+        # Clear lines and calculate score
         lines_cleared = self.board.clear_lines()
         if lines_cleared > 0:
-            # Update score based on lines cleared
-            self.lines_cleared += lines_cleared
-            self.score += lines_cleared * 100 # Basic scoring
-            # Level progression is going to be here
+            # Use our scoring system
+            points_earned = self._calculate_score(lines_cleared)
+            self.score += points_earned
+            self._update_level(lines_cleared)
+
         self.current_piece = self._create_new_piece()
         
         # Check if game over (new piece collides immediately)
@@ -344,3 +346,40 @@ class Game:
             self.update()
             self._render_simple()
             time.sleep(0.5)  # Slower for readability
+
+
+    def _calculate_score(self, lines_cleared):
+        """
+        Calculate score based on authentic Tetris scoring system
+        
+        Args:
+            lines_cleared (int): Number of lines cleared at once (1-4)
+
+        Returns:
+            int: Points earned
+        """
+        # Classic NES Tetris scoring
+        scoring_table = {
+            1: 40,   # 1 line = 40 points
+            2: 100,  # 2 lines = 100 points
+            3: 300,  # 3 lines = 300 points
+            4: 1200, # 4 lines = 1200 points (Tetris)
+        }
+
+        base_points = scoring_table.get(lines_cleared, 0)
+        return base_points * self.level
+    
+
+    def _update_level(self, new_lines_cleared):
+        """
+        Update level based on total lines cleared
+
+        Args:
+            new_lines_cleared (int): Lines cleared in the current move
+        """
+        self.lines_cleared += new_lines_cleared
+        # Level up every 10 lines (classic Tetris progression)
+        self.level = (self.lines_cleared // 10) + 1
+
+        # Increase game speed with level (every level = 10% faster)
+        self.drop_interval = max(0.1, 1.0 - (self.level -1) * 0.1)
