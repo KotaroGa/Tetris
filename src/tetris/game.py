@@ -17,7 +17,7 @@ class Game:
     """
     stdscr: 'curses._CursesWindow' # type: ignore 
 
-    def __init__(self, stdscr=None):  # Add stdscr parameter
+    def __init__(self, stdscr=None):
         """
         Initialize a new Tetris game
         
@@ -27,6 +27,7 @@ class Game:
         self.stdscr = stdscr  # Store the curses window
         self.board = Board()
         self.current_piece = self._create_new_piece()
+        self.next_piece = self._create_new_piece()
         self.score = 0
         self.level = 1
         self.game_over = False
@@ -120,24 +121,31 @@ class Game:
         # Lock the piece in place
         self._lock_piece()
     
+
     def _lock_piece(self):
         """Lock the current piece and create a new one"""
         self.board.lock_tetromino(self.current_piece)
-
+    
         # Clear lines and calculate score
         lines_cleared = self.board.clear_lines()
         if lines_cleared > 0:
-            # Use our scoring system
             points_earned = self._calculate_score(lines_cleared)
             self.score += points_earned
             self._update_level(lines_cleared)
-
-        self.current_piece = self._create_new_piece()
-        
+    
+        # NEXT PIECE LOGIC: Current becomes next, generate new next piece
+        self.current_piece = self.next_piece
+        self.next_piece = self._create_new_piece()
+    
+        # Reset position for the new current piece
+        self.current_piece.x = BOARD_WIDTH // 2 - 2
+        self.current_piece.y = 0
+    
         # Check if game over (new piece collides immediately)
         if self.board.has_collision(self.current_piece):
             self.game_over = True
     
+
     def _apply_gravity(self):
         """Make the current piece fall automatically based on time"""
         current_time = time.time()
@@ -246,7 +254,20 @@ class Game:
         
             if self.game_over and info_line + 1 < curses.LINES:
                 self._safe_addstr(info_line + 1, 0, "GAME OVER!")
-        
+
+            # Display next piece preview
+            preview_line = info_line + 3  # Leave some space after game info
+            if preview_line < curses.LINES:
+                self._safe_addstr(preview_line, 0, "Next Piece:")
+    
+            # Display the next piece in a mini preview
+            preview_x = 12  # Position for the preview
+            for y, row in enumerate(self.next_piece.shape):
+                for x, cell in enumerate(row):
+                    if cell:  # If there's a block in the piece
+                        if preview_line + y + 1 < curses.LINES:
+                            self._safe_addstr(preview_line + y + 1, preview_x + x * 2, "██")
+
             self.stdscr.refresh()
         
         except Exception as e:
@@ -291,6 +312,16 @@ class Game:
     
         if self.game_over:
             print("GAME OVER!")        
+
+        # Print next piece preview
+        print(f"Next Piece: {self.next_piece.shape_name}")
+        # Simple ASCII preview of next piece
+        for row in self.next_piece.shape:
+            line = ""
+            for cell in row:
+                line += "██" if cell else "  "
+            print(line)
+
 
     def _safe_addstr(self, y, x, text, attributes=0):
         """Safely add text to the curses window, handling boundary errors"""

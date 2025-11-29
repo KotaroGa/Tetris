@@ -116,3 +116,26 @@ class TestGame(unittest.TestCase):
         game._update_level(1)
         self.assertEqual(game.level, 2)
         self.assertEqual(game.lines_cleared, 10)
+
+
+    def test_next_piece_generation(self):
+        """Test that game generates and stores the next piece"""
+        game = Game()
+
+        # Should Have a current piece and next piece
+        self.assertIsNotNone(game.current_piece)
+        self.assertIsNotNone(game.next_piece)
+        self.assertIsNotNone(game.next_piece, Tetromino)
+
+
+    def test_next_piece_becomes_current(self):
+        """Test that next piece becomes current when piece locks"""
+        game = Game()
+        original_next_piece = game.next_piece
+
+        # Simulate locking current piece
+        game._lock_piece()
+
+        # Next piece should become current, and new next piece generated
+        self.assertEqual(game.current_piece, original_next_piece)
+        self.assertIsNotNone(game.next_piece)
