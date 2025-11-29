@@ -4,7 +4,13 @@ All notable changes to the Terminal Tetris project will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [v0.2.0] - [Date of Release]
+### [v0.3.0] - 29.11.2025
+
+#### Added
+- Next piece preview display for strategic planning
+- Players can now see upcoming pieces
+
+### [v0.2.0] - 08.11.2025
 
 #### Added
 - Authentic NES Tetris scoring system (40/100/300/1200 points)
@@ -25,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Terminal boundary rendering issues
 - Game over detection logic
 
-### [v0.1.0] - [Date of Release]
+### [v0.1.0] - 29.10.2025
 
 #### Added
 - All 7 classic tetromino shapes (I, O, T, L, J, S, Z)
@@ -47,7 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### [Unreleased]
 
 #### Planned Features
-- Next piece preview
 - High score system
 - Colorful terminal rendering
 - Start menu and pause screen
