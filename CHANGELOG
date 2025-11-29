@@ -1,0 +1,59 @@
+
+All notable changes to the Terminal Tetris project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+### [v0.2.0] - [Date of Release]
+
+#### Added
+- Authentic NES Tetris scoring system (40/100/300/1200 points)
+- Level progression (level up every 10 lines)
+- Increasing game speed with each level
+- Professional keyboard controls using curses
+- Line clearing mechanics with blocks falling down
+- Hard drop functionality (spacebar)
+- Enhanced terminal rendering with error handling
+
+#### Changed
+- Improved game loop for responsive controls
+- Enhanced collision detection system
+- Better terminal size adaptation
+
+#### Fixed
+- Rotation collision detection
+- Terminal boundary rendering issues
+- Game over detection logic
+
+### [v0.1.0] - [Date of Release]
+
+#### Added
+- All 7 classic tetromino shapes (I, O, T, L, J, S, Z)
+- Piece rotation system (clockwise/counter-clockwise)
+- Collision detection with walls and placed pieces
+- Piece locking mechanism
+- Basic game loop with automatic gravity
+- Professional project structure with GitFlow
+- Comprehensive test suite with pytest
+- Virtual environment configuration
+- Documentation in `/docs/` folder
+
+#### Technical
+- Modular architecture (Game, Board, Tetromino classes)
+- Test-Driven Development (TDD) approach
+- GitFlow workflow implementation
+- Pure Python implementation (no external dependencies)
+
+### [Unreleased]
+
+#### Planned Features
+- Next piece preview
+- High score system
+- Colorful terminal rendering
+- Start menu and pause screen
+- Sound effects
+- Game statistics tracking
+
+---
+
+*For detailed release notes, see the [releases/](releases/) directory.*
